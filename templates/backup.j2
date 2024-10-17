@@ -1,0 +1,34 @@
+#!/bin/bash
+
+#vars declaration
+env_name=$(hostname)
+timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
+
+backup_name="${env_name}_${timestamp}"
+db_name="{{ aws_backup_db_name }}"
+folder_path="{{ aws_backup_folder_path }}"
+bucket_name="{{ aws_bucket_name }}"
+include_web_folder="{{ include_web_folder }}"
+aws_path="$(which aws)"
+
+#Create the folder
+mkdir -p /opt/backups/$backup_name
+
+cd /opt/backups/$backup_name
+
+#Dump the DB. Note .my.cnf needs to be created, otherwise won't be able to dump
+mysqldump "$db_name" > "$db_name.sql"
+#Compress SQL file
+tar -zcvf $db_name.tar.gz $db_name.sql
+#Remove the SQL file to save space
+rm -f ./$db_name.sql
+
+if [[ "${include_web_folder,,}" == "true" ]]; then
+  #Move to S3 backup
+  $aws_path s3 sync $folder_path s3://$bucket_name/$env_name/web-shared/
+fi
+$aws_path s3 cp /opt/backups/$backup_name/$db_name.tar.gz s3://$bucket_name/$env_name/$backup_name/
+
+#Cleanup
+cd /opt/backups
+rm -rf /opt/backups/*

@@ -1,0 +1,3 @@
+---
+# defaults file for aws_backup_custom
+include_web_folder: false

@@ -67,6 +67,6 @@
   cron:
     name: "Backup script for {{ aws_backup_db_name }}"
     minute: "{{ range(0, 59) | random }}"
-    hour: "9"
+    hour: "4"
     user: root
     job: '/bin/bash -c "/opt/scripts/backup.sh"'

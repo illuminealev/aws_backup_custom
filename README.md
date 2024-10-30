@@ -11,12 +11,17 @@ ansible >= 2.9
 Role Variables
 --------------
 
-vault_aws_region,
+These go into vault:
 vault_aws_access_key_id,
-vault_aws_secret_access_key,
+vault_aws_secret_access_key
+
+These go into trellis/group_vars/staging/main.yml: 
+vault_aws_region,
 aws_backup_db_name,
 aws_backup_folder_path,
-aws_bucket_name,
+aws_bucket_name
+
+This one goes into the role defaults/main.yml: 
 include_web_folder
 
 

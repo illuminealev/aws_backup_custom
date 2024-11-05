@@ -15,15 +15,12 @@ These go into vault:
 vault_aws_access_key_id,
 vault_aws_secret_access_key
 
-These go into trellis/group_vars/staging/main.yml: 
+These go into trellis/group_vars/{{environment}}/main.yml: 
 vault_aws_region,
 aws_backup_db_name,
 aws_backup_folder_path,
-aws_bucket_name
-
-This one goes into the role defaults/main.yml: 
+aws_bucket_name,
 include_web_folder
-
 
 Dependencies
 ------------
